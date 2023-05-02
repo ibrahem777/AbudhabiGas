@@ -1,4 +1,4 @@
-GET http://localhost:3001/api/users/
+GET https://abudhabigas.onrender.com/api/users/
 
 ###
 POST http://localhost:3001/api/users/ HTTP/1.1
@@ -23,7 +23,7 @@ content-type: application/json
 }
 
 ###
-POST http://abudhabigas.onrender.com/api/login/ HTTP/1.1
+POST http://localhost:3001/api/login/ HTTP/1.1
 content-type: application/json
 
 {
