@@ -1,0 +1,32 @@
+GET http://localhost:3001/api/users/
+
+###
+POST http://localhost:3001/api/users/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "test",
+    "email": "test@gmail.com",
+    "mobile": "009714567876",
+    "password": "123456"
+}
+
+###
+POST http://localhost:3001/api/signup/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "test1",
+    "email": "test1@gmail.com",
+    "mobile": "009714567877",
+    "password": "123456"
+}
+
+###
+POST http://abudhabigas.onrender.com/api/login/ HTTP/1.1
+content-type: application/json
+
+{
+    "email": "test1@gmail.com",
+    "password": "123456"
+}
