@@ -73,7 +73,7 @@ usersRouter.post('/login', async (request, response) => {
 
   response
     .status(200)
-    .send({ token, name: user.name,email:user.email,mobile:user.mobile })
+    .send({ token, name: user.name,email:user.email,mobile:user.mobile,status:user.status })
 })
 
 usersRouter.post('/signup', async (request, response) => {
