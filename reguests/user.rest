@@ -1,32 +1,62 @@
-GET https://abudhabigas.onrender.com/api/users/
+GET http://localhost:3001/api/users/
 
 ###
 POST http://localhost:3001/api/users/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "test",
-    "email": "test@gmail.com",
-    "mobile": "009714567876",
+    "name": "test3",
+    "email": "test3@gmail.com",
+    "mobile": "009714667876",
     "password": "123456"
 }
 
 ###
-POST http://localhost:3001/api/signup/ HTTP/1.1
+POST http://localhost:3001/api/users/signup/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "test1",
+    "name": "test3",
+    "email": "test3@gmail.com",
+    "mobile": "009712567837",
+    "password": "123456"
+}
+
+###
+POST http://localhost:3001/api/users/login/ HTTP/1.1
+content-type: application/json
+
+{
     "email": "test1@gmail.com",
+    "password": "123456"
+}
+###
+POST http://localhost:3001/api/users/resetPassword/ HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImlkIjoiNjQ1MzllM2RmYTkxZGRiNzkxNGYyZjg1IiwiaWF0IjoxNjgzMjAyMTQwfQ.mChGG0V0FoXi8NwB6v3oQ7aSYKaVf5D7qP8vKU6fm3M
+
+{
+    "oldpassword": "123456",
+        "newpassword": "223456"
+
+
+}
+###
+POST http://localhost:3001/api/users/verify/ HTTP/1.1
+content-type: application/json
+
+{
     "mobile": "009714567877",
-    "password": "123456"
-}
+        "code": "1111"
 
+
+}
 ###
-POST http://localhost:3001/api/login/ HTTP/1.1
+POST http://localhost:3001/api/users/forgetPassword/ HTTP/1.1
 content-type: application/json
 
 {
-    "email": "test1@gmail.com",
-    "password": "123456"
+    "data": "test1@gmail.com"
+
+
 }

@@ -1,0 +1,11 @@
+GET http://localhost:3001/api/settings/
+
+###
+POST http://localhost:3001/api/settings/ads HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Fast Delivery at Your Doorstep",
+    "desc": "Easy and fast delivery at any time to help you improve living standard",
+    "img": ""
+}
