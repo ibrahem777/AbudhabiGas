@@ -1,7 +1,7 @@
 const settingRouter = require('express').Router()
 const { Ads } = require('../models/ads')
 const Setting = require('../models/setting')
-const uploadUtil = require('../utils/upload')
+const uploadUtil = require('../upload')
 
 settingRouter.get('/', async (request, response) => {
     const ads = await Ads.find({})

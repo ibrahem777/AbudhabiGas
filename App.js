@@ -29,6 +29,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/products', productRouter)
 app.use('/api/orders', orderRouter)
 app.use('/api/settings', settingRouter)
+app.use('/images', express.static('uploads'));
 
 
 // if (process.env.NODE_ENV === 'test') {
