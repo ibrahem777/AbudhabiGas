@@ -23,12 +23,42 @@ content-type: application/json
 }
 
 ###
-POST https://abudhabigas.onrender.com/api/login/ HTTP/1.1
+POST https://abudhabigas.onrender.com/api/users/login/ HTTP/1.1
 content-type: application/json
 
 {
     "email": "test1@gmail.com",
     "password": "123456"
+}
+###
+POST https://abudhabigas.onrender.com/api/users/verify/ HTTP/1.1
+content-type: application/json
+
+{
+    "mobile": "009714567877",
+        "code": "1111"
+
+
+}
+###
+POST https://abudhabigas.onrender.com/api/users/forgetPassword/ HTTP/1.1
+content-type: application/json
+
+{
+    "data": "test1@gmail.com"
+
+
+}
+###
+POST https://abudhabigas.onrender.com/api/users/resetPassword/ HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImlkIjoiNjQ1MzllM2RmYTkxZGRiNzkxNGYyZjg1IiwiaWF0IjoxNjgzMjAyMTQwfQ.mChGG0V0FoXi8NwB6v3oQ7aSYKaVf5D7qP8vKU6fm3M
+
+{
+    "oldpassword": "123456",
+        "newpassword": "223456"
+
+
 }
 ###
 GET https://abudhabigas.onrender.com/api/settings/
