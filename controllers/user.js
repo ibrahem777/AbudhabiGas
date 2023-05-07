@@ -126,10 +126,11 @@ usersRouter.post('/verify', async (request, response) => {
     // { expiresIn: 60*60 }
     // eslint-disable-next-line indent
      )
-
+user.status=1
+  await user.save()
   response
     .status(200)
-    .send({ token, name: user.name,email:user.email,mobile:user.mobile })
+    .send({ token, name: user.name,email:user.email,mobile:user.mobile,status:user.status })
 })
 
 usersRouter.post('/resetPassword', async (request, response) => {
