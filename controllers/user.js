@@ -16,7 +16,11 @@ const getTokenFrom = request => {
 usersRouter.get('/', async (request, response) => {
   const users = await User.find({})
   //.populate('notes',{ content:1,important:1 })
-  response.json(users)
+  response.json({
+    'status':true,
+    'code':200,
+    'message':'success',
+    'data':users})
 })
 
 usersRouter.post('/', async (request, response) => {
@@ -34,7 +38,11 @@ usersRouter.post('/', async (request, response) => {
 
   const savedUser = await user.save()
 
-  response.status(201).json(savedUser)
+  response.json({
+    'status':true,
+    'code':200,
+    'message':'success',
+    'data':savedUser})
 })
 
 
@@ -50,12 +58,16 @@ usersRouter.post('/login', async (request, response) => {
 
   if (!(user && passwordCorrect)) {
     return response.status(401).json({
+      status:false,
+      code:401,
       message: 'invalid username or password'
     })
   }
   else if(user.status==0){
-    return response.status(402).json({
-      message: 'you need to confirm your mobile number'
+    return response.json({
+      status:false,
+      code:201,
+      'message': 'you need to confirm your mobile number'
     })
   }
 
@@ -72,8 +84,13 @@ usersRouter.post('/login', async (request, response) => {
      )
 
   response
-    .status(200)
-    .send({ token, name: user.name,email:user.email,mobile:user.mobile,status:user.status })
+    .json({
+      status:true,
+      code:200,
+      message:'success',
+      data:{
+        token,...user
+      }})
 })
 
 usersRouter.post('/signup', async (request, response) => {
@@ -97,7 +114,11 @@ usersRouter.post('/signup', async (request, response) => {
 
   const savedUser = await user.save()
 
-  response.status(201).json(savedUser)
+  response.json({
+    status:true,
+    code:200,
+    message:'success',
+    data:user})
 })
 
 
@@ -110,8 +131,10 @@ usersRouter.post('/verify', async (request, response) => {
     : Number(code)===1111
 
   if (!(user && codeCorrect)) {
-    return response.status(401).json({
-      error: 'invalid code or mobile'
+    return response.json({
+      status:false,
+      code:401,
+      message: 'invalid code or mobile'
     })
   }
 
@@ -129,8 +152,14 @@ usersRouter.post('/verify', async (request, response) => {
 user.status=1
   await user.save()
   response
-    .status(200)
-    .send({ token, name: user.name,email:user.email,mobile:user.mobile,status:user.status })
+
+  .json({
+    status:true,
+    code:200,
+    message:'success',
+    data:{
+      token,...user
+    }})
 })
 
 usersRouter.post('/resetPassword', async (request, response) => {
@@ -151,8 +180,10 @@ usersRouter.post('/resetPassword', async (request, response) => {
     : await bcrypt.compare(oldpassword, user.passwordHash)
 
   if (!(user && passwordCorrect)) {
-    return response.status(401).json({
-      error: 'wrong password'
+    return response.json({
+      status:false,
+      code:401,
+      message: 'wrong password'
     })
   }
 
@@ -162,8 +193,11 @@ usersRouter.post('/resetPassword', async (request, response) => {
   await user.save()
 
   response
-    .status(200)
-    .send({ message:'password has been updated'})
+  json({
+    status:true,
+    code:200,
+    message: 'password has been updated'
+  })
 })
 usersRouter.post('/forgetPassword', async (request, response) => {
   const data=request.body.data
@@ -184,8 +218,10 @@ if(data.indexOf('@')===-1){
    console.log('user',user)
 
   if (!(user)) {
-    return response.status(401).json({
-      error: 'No user with this '+type
+    return response.json({
+      status:false,
+      code:401,
+      message: 'No user with this '+type
     })
   }
   const newpassword="123456"
@@ -195,8 +231,11 @@ if(data.indexOf('@')===-1){
   user.passwordHash=passwordHash
   await user.save()
 
-  response
-    .status(200)
-    .send({ message:'password has been sent'})
+  response.json({
+    status:false,
+    code:401,
+    message: 'password has been sent '
+  })
+   
 })
 module.exports = usersRouter

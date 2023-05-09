@@ -9,22 +9,23 @@ const requestLogger = (request, response, next) => {
 }
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ message: 'unknown endpoint' })
+  response.json({
+    code:404,
+    status:false,
+     message: 'unknown endpoint' })
 }
 
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message)
 
   if (error.name === 'CastError') {
-    return response.status(400).send({ message: 'malformatted id' })
+    return response.json({code:400,status:false, message: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
-    return response.status(400).json({ message: error.message })
+    return response.json({code:401, status:false, message: error.message })
   }else if (error.name ===  'JsonWebTokenError') {
-    return response.status(400).json({ message: error.message })
+    return response.json({code:400,status:false, message: error.message })
   } else if (error.name === 'TokenExpiredError') {
-    return response.status(401).json({
-      message: 'token expired'
-    })
+    return response.json({code:401,status:false,message: 'token expired'})
   }
 
   next(error)

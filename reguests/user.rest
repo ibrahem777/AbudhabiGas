@@ -16,9 +16,9 @@ POST http://localhost:3001/api/users/signup/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "test3",
-    "email": "test3@gmail.com",
-    "mobile": "009712567837",
+    "name": "test92",
+    "email": "test92@gmail.com",
+    "mobile": "009772567832",
     "password": "123456"
 }
 

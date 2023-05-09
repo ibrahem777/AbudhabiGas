@@ -20,7 +20,11 @@ const getTokenFrom = request => {
 orderRouter.get('/', async (request, response) => {
   const orders = await Order.find({})
   //.populate('notes',{ content:1,important:1 })
-  response.json(orders)
+  response.json({
+    'status':true,
+    'code':200,
+    'message':'success',
+    'data':orders})
 })
 
 orderRouter.post('/', async (request, response) => {
@@ -78,7 +82,11 @@ console.log('productsFromDB',productsFromDB)
 
   const savedOrder = await order.save()
 
-  response.status(201).json(savedOrder)
+  response.json({
+    'status':true,
+    'code':200,
+    'message':'success',
+    'data':savedOrder})
 })
 
 orderRouter.get('/userOrders', async (request, response) => {
@@ -91,9 +99,16 @@ orderRouter.get('/userOrders', async (request, response) => {
     const order = await Order.find({user : decodedToken.id})
     if (order) {
      
-      response.json(order)
+      response.json({
+        'status':true,
+        'code':200,
+        'message':'success',
+        'data':order})
     } else {
-      response.status(404).end()
+      response.json({
+        'status':false,
+        'code':400,
+        'message':'not found'})
     }
   })
 orderRouter.get('/:id', async (request, response) => {
@@ -106,9 +121,16 @@ orderRouter.get('/:id', async (request, response) => {
     const order = await Order.findById(request.params.id)
     if (order) {
         console.log('order',order)
-      response.json(order)
+      response.json({
+        'status':true,
+        'code':200,
+        'message':'success',
+        'data':order})
     } else {
-      response.status(404).end()
+      response.json({
+        'status':false,
+        'code':400,
+        'message':'not found'})
     }
   })
 
