@@ -47,7 +47,7 @@ usersRouter.post('/', async (request, response) => {
 
 
 usersRouter.post('/login', async (request, response) => {
-  console.log(request.body)
+  console.log('request.body',request.body)
 
   const email = request.body.email
   const password = request.body.password
