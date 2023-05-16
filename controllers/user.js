@@ -91,7 +91,7 @@ console.log('email',email,'passwrd',password)
       code:200,
       message:'success',
       data:{
-        token,name:user.name,email:user.email,phone :user.phone,status:user.status
+        token,id:user.id,name:user.name,email:user.email,phone :user.phone,status:user.status
       }})
 })
 
@@ -160,7 +160,7 @@ user.status=1
     code:200,
     message:'success',
     data:{
-      token,name:user.name,email:user.email,phone :user.phone,status:user.status
+      token,id:user.id,name:user.name,email:user.email,phone :user.phone,status:user.status
     }})
 })
 

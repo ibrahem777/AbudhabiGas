@@ -9,7 +9,7 @@ settingRouter.get('/', async (request, response) => {
       'status':true,
       'code':200,
       'message':'success',
-      'data':ads})
+      'data':{'ads':ads}})
   })
 settingRouter.post('/ads',uploadUtil.upload.single("image"), async (request, response) => {
   const title = request.body.title
