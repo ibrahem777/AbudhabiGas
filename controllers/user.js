@@ -82,8 +82,8 @@ console.log('email',email,'passwrd',password)
     return response.json({
       status:false,
       code:201,
-      message: 'you need to confirm your mobile number',
-      data:user.phone
+      message: 'you need to confirm your mobile number number',
+      data:user.mobile
     })
   }
 
@@ -105,7 +105,7 @@ console.log('email',email,'passwrd',password)
       code:200,
       message:'success',
       data:{
-        token,id:user.id,name:user.name,email:user.email,phone :user.phone,status:user.status
+        token,id:user.id,name:user.name,email:user.email,mobile :user.mobile,status:user.status
       }})
 })
 
