@@ -1,17 +1,16 @@
 const productRouter = require('express').Router()
-const {Product} = require('../models/product')
+const Product = require('../models/product')
 const uploadUtil = require('../upload')
 const {URL}=require('../utils/config')
 
 productRouter.get('/', async (request, response) => {
-  const products = await Product.find({})
-  //.populate('notes',{ content:1,important:1 })
+  const products = await Product.findAll({})
   response.json({
     'status':true,
     'code':200,
     'message':'success',
     'data':products})
-})
+}) 
 
 productRouter.post('/',uploadUtil.upload.single("image"), async (request, response) => {
   console.log(request.body)
@@ -20,20 +19,17 @@ productRouter.post('/',uploadUtil.upload.single("image"), async (request, respon
 
  
 
-  const product = new Product({
+  const product =await Product.create({ 
     name,
     desc,
     img,
-    price,
-  })
-
-  const savedProduct = await product.save()
+    price,})
 
   response.json({
     'status':true,
     'code':200,
     'message':'success',
-    'data':savedProduct})
+    'data':product})
 })
 
 module.exports = productRouter

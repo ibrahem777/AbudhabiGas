@@ -12,13 +12,13 @@ content-type: application/json
 }
 
 ###
-POST https://abudhabigas.onrender.com/api/signup/ HTTP/1.1
+POST https://abudhabigas.onrender.com/api/users/signup/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "test1",
-    "email": "test1@gmail.com",
-    "mobile": "009714567877",
+    "name": "test34",
+    "email": "test33@gmail.com",
+    "mobile": "009714561877",
     "password": "123456"
 }
 
@@ -62,4 +62,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQ
 }
 ###
 GET https://abudhabigas.onrender.com/api/settings/
+###
+GET https://abudhabigas.onrender.com/api/products
 

@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
+const Note = require('../models/note')
+
 const logger = require('../utils/logger')
 const jwt = require('jsonwebtoken')
 
@@ -14,8 +16,7 @@ const getTokenFrom = request => {
   return null
 }
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
-  //.populate('notes',{ content:1,important:1 })
+  const users = await User.findAll({})
   response.json({
     'status':true,
     'code':200,
@@ -26,23 +27,32 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.post('/', async (request, response) => {
   const {  name,email,mobile, password } = request.body
 
-  const saltRounds = 10
+  
+  
+  try {
+    const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
 
-  const user = new User({
-    name,
-    email,
-    mobile,
-    passwordHash,
-  })
+    const user = await User.create({
+      
+     name: name,
+      password: passwordHash,
+    mobile: mobile,
+  email:  email,
+    })
+    response.json({
+      'status':true,
+      'code':200,
+      'message':'success',
+      'data':user})
+  } catch(error) {
+    return response.json({
+      status:false,
+      code:400,
+      'message': error
+    })  }
 
-  const savedUser = await user.save()
-
-  response.json({
-    'status':true,
-    'code':200,
-    'message':'success',
-    'data':savedUser})
+  
 })
 
 
@@ -53,10 +63,13 @@ usersRouter.post('/login', async (request, response) => {
   const password = request.body.password
 
 console.log('email',email,'passwrd',password)
-  const user = await User.findOne({ email })
+
+  const user = await User.findOne({  where: {
+    email: email
+  } })
   const passwordCorrect = user === null
     ? false
-    : await bcrypt.compare(password, user.passwordHash)
+    : await bcrypt.compare(password, user.password)
 
   if (!(user && passwordCorrect)) {
     return response.json({
@@ -69,13 +82,14 @@ console.log('email',email,'passwrd',password)
     return response.json({
       status:false,
       code:201,
-      'message': 'you need to confirm your mobile number'
+      message: 'you need to confirm your mobile number',
+      data:user.phone
     })
   }
 
   const userForToken = {
     email: user.email,
-    id: user._id,
+    id: user.id,
   }
 
   const token = jwt.sign( userForToken,
@@ -103,18 +117,14 @@ usersRouter.post('/signup', async (request, response) => {
   const password=request.body.password
   const status=0
   console.log(password)
-
+ 
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(password, saltRounds)
-  const user = new User({
-    name,
-    email,
-    mobile,
-    status,
-    passwordHash,
-  })
-
-  const savedUser = await user.save()
+  const user = await User.create({ name:name,
+   email: email,
+    mobile:mobile,
+    status:status,
+   password: passwordHash,})
 
   response.json({
     status:true,
@@ -127,7 +137,9 @@ usersRouter.post('/signup', async (request, response) => {
 usersRouter.post('/verify', async (request, response) => {
   const mobile=request.body.mobile
   const code=request.body.code
-  const user = await User.findOne({ mobile })
+  const user = await User.findOne({where: {
+    mobile: mobile
+  }})
   const codeCorrect = user === null
     ? false
     : Number(code)===1111
@@ -142,7 +154,7 @@ usersRouter.post('/verify', async (request, response) => {
 
   const userForToken = {
     email: user.email,
-    id: user._id,
+    id: user.id,
   }
 
   const token = jwt.sign( userForToken,
@@ -160,7 +172,7 @@ user.status=1
     code:200,
     message:'success',
     data:{
-      token,id:user.id,name:user.name,email:user.email,phone :user.phone,status:user.status
+      token,id:user.id,name:user.name,email:user.email,mobile :user.mobile,status:user.status
     }})
 })
 
@@ -174,12 +186,12 @@ usersRouter.post('/resetPassword', async (request, response) => {
     return response.status(401).json({ error: 'token invalid' })
   }
   console.log('decodedToken.id',decodedToken.id)
-  const user = await User.findById(decodedToken.id)
+  const user = await User.findByPk(decodedToken.id)
   
 
   const passwordCorrect = user === null
     ? false
-    : await bcrypt.compare(oldpassword, user.passwordHash)
+    : await bcrypt.compare(oldpassword, user.password)
 
   if (!(user && passwordCorrect)) {
     return response.json({
@@ -191,10 +203,10 @@ usersRouter.post('/resetPassword', async (request, response) => {
 
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(newpassword, saltRounds)
-  user.passwordHash=passwordHash
+  user.password=passwordHash
   await user.save()
 
-  response
+  response.
   json({
     status:true,
     code:200,
@@ -216,7 +228,7 @@ if(data.indexOf('@')===-1){
 
 
 }
- const  user = await User.findOne(query)
+ const  user = await User.findOne({wehere :{query}})
    console.log('user',user)
 
   if (!(user)) {

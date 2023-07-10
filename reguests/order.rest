@@ -3,22 +3,21 @@ GET http://localhost:3001/api/orders/
 ###
 POST http://localhost:3001/api/orders/ HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImlkIjoiNjQ1MGFmZTBhNDJjMmViNjliN2RlZTI3IiwiaWF0IjoxNjgzMDI3MzMyfQ.YUrER2Fdmc05qQDgX5t4_UD79zB-nKGmaQ0QW7nytWE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTY4NTI3OTU4NH0.y1yU7fFTWkV0q3fLpA6w1lnvMVAWg8Lv7j5-lI77V14
 
 {
     "paymenttype":1,
-    "lat": 23.566777,
-    "long": 43.6667,
+    "lat": 23,
+    "long": 43,
     "products":[
-        {"id":"6450be1328a569b97589c223","q":2},
-        {"id":"6450be3d28a569b97589c226","q":3}]
+        {"id":"1","q":11},
+        {"id":"2","q":12}]
 }
 ###
-GET http://localhost:3001/api/orders/64536c48613db9a09613b54e
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImlkIjoiNjQ1MGFmZTBhNDJjMmViNjliN2RlZTI3IiwiaWF0IjoxNjgzMDI3MzMyfQ.YUrER2Fdmc05qQDgX5t4_UD79zB-nKGmaQ0QW7nytWE
+GET http://localhost:3001/api/orders/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTY4NTI3OTU4NH0.y1yU7fFTWkV0q3fLpA6w1lnvMVAWg8Lv7j5-lI77V14
 
 ###
 GET http://localhost:3001/api/orders/userOrders
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWQiOiI2NDUwYWMyZDIzOTA5MzYyYmIxNjM1M2EiLCJpYXQiOjE2ODMxOTAwNDZ9.4xCLEqycc7ilgbKr-0PS7xveajPXJS1tVvxHIfAd7lM
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImlkIjoiNjQ1MGFmZTBhNDJjMmViNjliN2RlZTI3IiwiaWF0IjoxNjgzMDI3MzMyfQ.YUrER2Fdmc05qQDgX5t4_UD79zB-nKGmaQ0QW7nytWE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTY4NTI3OTU4NH0.y1yU7fFTWkV0q3fLpA6w1lnvMVAWg8Lv7j5-lI77V14
 

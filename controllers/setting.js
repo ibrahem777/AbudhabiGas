@@ -1,10 +1,9 @@
 const settingRouter = require('express').Router()
-const { Ads } = require('../models/ads')
-const Setting = require('../models/setting')
+const  Ads  = require('../models/ads')
 const uploadUtil = require('../upload')
 const {URL}=require('../utils/config')
 settingRouter.get('/', async (request, response) => {
-    const ads = await Ads.find({})
+    const ads = await Ads.findAll({})
     response.json({
       'status':true,
       'code':200,
@@ -15,12 +14,11 @@ settingRouter.post('/ads',uploadUtil.upload.single("image"), async (request, res
   const title = request.body.title
   const desc = request.body.desc
   const img=URL+request.file.filename
-const newAds=Ads({
+const newAds=await Ads.create({
     title,
     desc,
     img
 })
-const savedAds=await newAds.save()
 // const settings = await Setting.find({})
 
 // settings[0].ads = settings[0].ads.concat(savedAds._id)
@@ -30,7 +28,7 @@ const savedAds=await newAds.save()
       'status':true,
       'code':200,
       'message':'success',
-      'data':savedAds})
+      'data':newAds})
 })
 
 module.exports = settingRouter

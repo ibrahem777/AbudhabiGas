@@ -1,39 +1,71 @@
-const mongoose=require('mongoose')
-const {productSchema} = require('../models/product')
+const { Model, DataTypes } = require('sequelize')
 
-const orderSchema=mongoose.Schema({
-    status:Number,
-    paymentType:Number,
-    lat:Number,
-    long:Number,
-    amount:Number,
-    vat:Number,
-    deliveryCharge:Number,
-    date:Date,
-    total:Number,
-    products: [
-        {
-        product:productSchema,
-        quantity:{
-            type : Number,
-            default: 0
-        }
-        }
-      ],
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-      }
+const { sequelize } = require('../utils/db')
+
+class Order extends Model {}
+
+Order.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  status: {
+    type: DataTypes.INTEGER,
+    defaultValue:0,
+
+  },
+  paymentType: {
+    type: DataTypes.INTEGER,
+    defaultValue:0,
+
+  }, 
+  lat: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+
+
+  },
+   long: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+
+
+  }, 
+  amount: {
+    type: DataTypes.INTEGER,
+
+  },
+   vat: {
+    type: DataTypes.INTEGER,
+
+  },
+   deliveryCharge: {
+    type: DataTypes.INTEGER,
+
+  }, 
+  date: {
+    type: DataTypes.DATE,
+    defaultValue:0,
+
+  },
+   total: {
+    type: DataTypes.INTEGER,
+    defaultValue:0,
+
+  }, 
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: 'users', key: 'id' },
+  }
+}, {
+  sequelize,
+  underscored: true,
+  timestamps: true,
+  createdAt: 'created_at',
+updatedAt: 'updated_at',
+  modelName: 'order'
 })
-orderSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-      returnedObject.id = returnedObject._id.toString()
-      delete returnedObject._id
-      delete returnedObject.__v
-      delete returnedObject.products.ObjectId
-    }
-  })
-  
-  const Order = mongoose.model('Order', orderSchema)
-  
-  module.exports = Order
+
+module.exports = Order

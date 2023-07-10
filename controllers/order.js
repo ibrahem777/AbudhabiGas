@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken')
 const logger = require('../utils/logger')
-const mongoose=require('mongoose')
 const orderRouter = require('express').Router()
-const Order = require('../models/order')
-const User = require('../models/user')
-const {Product} = require('../models/product')
+const { Product,OrderProducts ,User,Order} = require('../models')
+const {tokenExtractor} = require('../utils/middleware')
 const { json } = require('express')
+const { where } = require('sequelize')
 
 const getTokenFrom = request => {
 
@@ -18,7 +17,16 @@ const getTokenFrom = request => {
   }
 
 orderRouter.get('/', async (request, response) => {
-  const orders = await Order.find({})
+  const orders = await Order.findAll({include: {
+    model: OrderProducts,
+    // through: {
+    //   attributes: ['quantity']
+    // }
+    attributes: ['quantity'],
+    include: [Product, ]
+    
+   
+  }})
   //.populate('notes',{ content:1,important:1 })
   response.json({
     'status':true,
@@ -27,15 +35,12 @@ orderRouter.get('/', async (request, response) => {
     'data':orders})
 })
 
-orderRouter.post('/', async (request, response) => {
+orderRouter.post('/',tokenExtractor, async (request, response) => {
   console.log(request.body)
-  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
-  console.log('decodedToken.id',decodedToken.id)
-  const user = await User.findById(decodedToken.id)
-const paymentType=request.body.paymentType
+
+  console.log('decodedToken.id',request.decodedToken.id)
+  const user = await User.findByPk(request.decodedToken.id)
+const paymentType=request.body.paymenttype
 const lat=request.body.lat
 const long=request.body.long
 const products=request.body.products
@@ -43,9 +48,11 @@ const ids=products.map((e)=>e['id'])
 const q=products.map((e)=>e['q'])
 
 console.log('ids :',ids)
+console.log('q :',q)
 
-const productsFromDB=await Product.find({
-    '_id': { $in: ids}})
+
+const productsFromDB=await Product.findAll({
+    where: {id: ids}})
 
 console.log('productsFromDB',productsFromDB)
  const status=0
@@ -57,16 +64,7 @@ console.log('productsFromDB',productsFromDB)
  const deliveryCharge=10
  const total=vat+deliveryCharge+amount
 
- //response.status(200)
- const test={product :productsFromDB[0], quantity:q[0]}
- console.log('test',test)
-
- const finalProducts=productsFromDB.map((e)=>{
-    return {product :e, quantity:q[productsFromDB.indexOf(e)]}
- } )
- console.log('finalProducts',finalProducts)
-
-  const order = new Order({
+  const order = await Order.create({
     status:status,
     paymentType:paymentType,
     lat:lat,
@@ -75,28 +73,29 @@ console.log('productsFromDB',productsFromDB)
     vat:vat,
     deliveryCharge:deliveryCharge,
     total:total,
-    //quantities:[...products],
-    products:finalProducts,
-   user: user.id
+   userId: user.id
   })
-
-  const savedOrder = await order.save()
+  productsFromDB.map((product)=> order.addProduct(product,{ through: { quantity: q[productsFromDB.indexOf(product)] ,},})
+ )
+  
 
   response.json({
     'status':true,
     'code':200,
     'message':'success',
-    'data':savedOrder})
+    'data':order})
 })
 
-orderRouter.get('/userOrders', async (request, response) => {
-    console.log(request.body)
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token invalid' })
-    }
-    console.log('decodedToken.id',decodedToken.id)
-    const order = await Order.find({user : decodedToken.id})
+orderRouter.get('/userOrders',tokenExtractor, async (request, response) => {
+  
+    console.log('decodedToken.id',request.decodedToken.id)
+    const order = await Order.findAll({where:{userId : request.decodedToken.id},include: {
+      model: OrderProducts,
+      attributes: ['quantity'],
+      include: [Product, ]
+      
+     
+    }})
     if (order) {
      
       response.json({
@@ -111,14 +110,16 @@ orderRouter.get('/userOrders', async (request, response) => {
         'message':'not found'})
     }
   })
-orderRouter.get('/:id', async (request, response) => {
-    console.log(request.body)
-    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token invalid' })
-    }
-    console.log('decodedToken.id',decodedToken.id)
-    const order = await Order.findById(request.params.id)
+orderRouter.get('/:id',tokenExtractor, async (request, response) => {
+   
+    console.log('decodedToken.id',request.decodedToken.id)
+    const order = await Order.findByPk(request.params.id,{include: {
+      model: OrderProducts,
+      attributes: ['quantity'],
+      include: [Product, ]
+      
+     
+    }})
     if (order) {
         console.log('order',order)
       response.json({

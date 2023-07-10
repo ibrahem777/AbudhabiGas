@@ -11,5 +11,6 @@ const MONGODB_URI = process.env.NODE_ENV === 'test'
 module.exports = {
   MONGODB_URI,
   PORT,
-  URL
+  URL,
+  DATABASE_URL: process.env.DATABASE_URL
 }

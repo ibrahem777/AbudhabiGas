@@ -6,9 +6,15 @@ const usersRouter = require('./controllers/user')
 const productRouter = require('./controllers/product')
 const orderRouter = require('./controllers/order')
 const settingRouter = require('./controllers/setting')
+const notesRouter = require('./controllers/note')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+
+require('dotenv').config()
+const { Sequelize,Model, DataTypes  } = require('sequelize')
+
+const sequelize = new Sequelize(process.env.DATABASE_URL)
 
 mongoose.set('strictQuery', false)
 
@@ -21,14 +27,14 @@ mongoose.connect(config.MONGODB_URI)
   .catch((error) => {
     logger.error('error connecting to MongoDB:', error.message)
   })
-
+  
 app.use(express.json())
 app.use(middleware.requestLogger)
-
 app.use('/api/users', usersRouter)
 app.use('/api/products', productRouter)
 app.use('/api/orders', orderRouter)
 app.use('/api/settings', settingRouter)
+app.use('/api/notes', notesRouter)
 app.use('/images', express.static('uploads'));
 
 

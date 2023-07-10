@@ -5,10 +5,23 @@ POST http://localhost:3001/api/users/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "test3",
-    "email": "test3@gmail.com",
-    "mobile": "009714667876",
+    "name": "test",
+    "email": "test@gmail.com",
+    "mobile": "009711234567",
     "password": "123456"
+}
+
+###
+GET http://localhost:3001/api/notes/
+
+###
+POST http://localhost:3001/api/notes/ HTTP/1.1
+content-type: application/json
+
+{
+    "content": "note api",
+    "important": true
+
 }
 
 ###
@@ -16,9 +29,9 @@ POST http://localhost:3001/api/users/signup/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "test92",
-    "email": "test92@gmail.com",
-    "mobile": "009772567832",
+    "name": "test",
+    "email": "test@gmail.com",
+    "mobile": "009711234567",
     "password": "123456"
 }
 
@@ -27,17 +40,17 @@ POST http://localhost:3001/api/users/login/ HTTP/1.1
 content-type: application/json
 
 {
-    "email": "test1@gmail.com",
+    "email": "test@gmail.com",
     "password": "123456"
 }
 ###
 POST http://localhost:3001/api/users/resetPassword/ HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsImlkIjoiNjQ1MzllM2RmYTkxZGRiNzkxNGYyZjg1IiwiaWF0IjoxNjgzMjAyMTQwfQ.mChGG0V0FoXi8NwB6v3oQ7aSYKaVf5D7qP8vKU6fm3M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWQiOjEsImlhdCI6MTY4NTI1OTcwOX0.0Ay8fBv8k63YbPq_0xyJx9Dppe8skfMQ09AjoBPcdfE
 
 {
-    "oldpassword": "123456",
-        "newpassword": "223456"
+    "oldpassword": "223456",
+        "newpassword": "123456"
 
 
 }
@@ -46,7 +59,7 @@ POST http://localhost:3001/api/users/verify/ HTTP/1.1
 content-type: application/json
 
 {
-    "mobile": "009714567877",
+    "mobile": "009711234567",
         "code": "1111"
 
 
@@ -56,7 +69,7 @@ POST http://localhost:3001/api/users/forgetPassword/ HTTP/1.1
 content-type: application/json
 
 {
-    "data": "test1@gmail.com"
+    "data": "test@gmail.com"
 
 
 }

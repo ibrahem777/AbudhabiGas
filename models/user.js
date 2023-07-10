@@ -1,41 +1,91 @@
-const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator')
+// const mongoose = require('mongoose')
+// const uniqueValidator = require('mongoose-unique-validator')
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true
+// const userSchema = new mongoose.Schema({
+//   name: {
+//     type: String,
+//     required: true,
+//     unique: true
+//   },
+//   email: {
+//     type: String,
+//     required: true,
+//     unique: true
+//   },
+//   mobile: {
+//     type: String,
+//     required: true,
+//     unique: true
+//   },
+//   status:{
+//     type: Number,
+//     default:0
+//   },
+//   passwordHash: String,
+  
+// })
+
+// userSchema.set('toJSON', {
+//   transform: (document, returnedObject) => {
+//     returnedObject.id = returnedObject._id.toString()
+//     delete returnedObject._id
+//     delete returnedObject.__v
+//     // the passwordHash should not be revealed
+//     delete returnedObject.passwordHash
+//   }
+// })
+// userSchema.plugin(uniqueValidator)
+
+// const User = mongoose.model('User', userSchema)
+
+// module.exports = User
+const { Model, DataTypes } = require('sequelize')
+
+const { sequelize } = require('../utils/db')
+
+class User extends Model {}
+
+User.init({
+  
+id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
   },
   email: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
     unique: true
+  },
+  name: {
+    type: DataTypes.STRING,
   },
   mobile: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
     unique: true
   },
-  status:{
-    type: Number,
-    default:0
+  password: {
+    type: DataTypes.STRING,
   },
-  passwordHash: String,
-  
-})
+  status:{
+    type: DataTypes.INTEGER,
+    defaultValue:0,
+  },
 
-userSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-    // the passwordHash should not be revealed
-    delete returnedObject.passwordHash
-  }
+  admin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  disabled: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+}, {
+  sequelize,
+  underscored: true,
+  timestamps: false,
+  modelName: 'user'
 })
-userSchema.plugin(uniqueValidator)
-
-const User = mongoose.model('User', userSchema)
 
 module.exports = User
